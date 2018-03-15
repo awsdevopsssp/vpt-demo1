@@ -1,4 +1,4 @@
-node {
+node ('aws') {
     stage ('SCM'){
    checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'ssp-git-creds', url: 'https://github.com/awsdevopsssp/vpt-demo1.git']]])
  }
