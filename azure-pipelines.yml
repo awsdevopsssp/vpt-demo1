@@ -1,0 +1,48 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- develop
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  # azureSubscriptionEndpoint: $(service-connection-name)
+  # azureContainerRegistry: $(container-registry-host)
+  # registryName: $(azureContainerRegistry)/$(Build.Repository.Name)
+  imageName: ssp-test:$(Build.BuildId)
+  
+
+# steps:
+# - script: echo Hello, world!
+#   displayName: 'Run a one-line script'
+
+# - script: |
+#     echo Add other tasks to build, test, and deploy your project.
+#     echo See https://aka.ms/yaml
+#   displayName: 'Run a multi-line script'
+
+
+
+# ----------------------------
+# Docker Image: Build and Push
+# ----------------------------
+stages:
+- stage: BuildImage
+  displayName: 'Build'
+  jobs:
+    - job: build_and_push_image
+      steps:
+      # - script: |
+      #     echo '##vso[task.setvariable variable=buildSha]'$(git rev-parse --short HEAD)''
+      #     echo 'buildSha set to $(buildSha)'
+      #   displayName: Get build git sha
+
+      - script: docker build --tag $(imageName) .
+        displayName: 'Docker: Build and tag image'
+      
+      - script: docker images | grep ssp
+        displayName: 'List Docker Images'
